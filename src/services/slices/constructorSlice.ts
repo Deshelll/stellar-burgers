@@ -47,10 +47,8 @@ const constructorSlice = createSlice({
       }
     },
     removeIngredient(state, action) {
-      state.constructorItems.ingredients =
-        state.constructorItems.ingredients.filter(
-          (item) => item.id !== action.payload
-        );
+      const index = action.payload;
+      state.constructorItems.ingredients.splice(index, 1);
     },
     resetConstructor(state) {
       state.constructorItems.ingredients = [];
