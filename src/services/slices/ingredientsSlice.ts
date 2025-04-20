@@ -1,17 +1,19 @@
 import { getIngredientsApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TIngredient } from '@utils-types';
+import { TIngredient, TOrder } from '@utils-types';
 
 type IngredientsState = {
   items: TIngredient[];
   isLoading: boolean;
   error: string | null;
+  orderData: TOrder | null;
 };
 
 const initialState: IngredientsState = {
   items: [],
   isLoading: false,
-  error: null
+  error: null,
+  orderData: null
 };
 
 export const fetchIngredients = createAsyncThunk(

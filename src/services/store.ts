@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import AuthReducer from './slices/authSlice';
 import IngredientsReducer from './slices/ingredientsSlice';
 import ConstructorReducer from './slices/constructorSlice';
+import ProfileOrdersReducer from './slices/profileOrderSlice';
 import FeedReducer from './slices/feedSlice';
 import {
   TypedUseSelectorHook,
@@ -16,7 +17,8 @@ const store = configureStore({
     auth: AuthReducer,
     ingredients: IngredientsReducer,
     constructorIngredients: ConstructorReducer,
-    feed: FeedReducer
+    feed: FeedReducer,
+    profileOrders: ProfileOrdersReducer
   },
   devTools: process.env.NODE_ENV !== 'production'
 });
