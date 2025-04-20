@@ -15,12 +15,20 @@ import styles from './app.module.css';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import { ProtectedRoute } from '../Protected-Route';
+import { useEffect } from 'react';
+import { useDispatch } from '../../services/store';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 
 const App = () => {
   const navigation = useNavigate();
   const goBack = () => navigation(-1);
   const location = useLocation();
   const backgroundLocation = location.state?.background;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
@@ -33,7 +41,7 @@ const App = () => {
         <Route
           path='/login'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute unAuth>
               <Login />
             </ProtectedRoute>
           }
@@ -41,7 +49,7 @@ const App = () => {
         <Route
           path='/register'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute unAuth>
               <Register />
             </ProtectedRoute>
           }
@@ -49,7 +57,7 @@ const App = () => {
         <Route
           path='/forgot-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute unAuth>
               <ForgotPassword />
             </ProtectedRoute>
           }
@@ -57,7 +65,7 @@ const App = () => {
         <Route
           path='/reset-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute unAuth>
               <ResetPassword />
             </ProtectedRoute>
           }
@@ -101,9 +109,9 @@ const App = () => {
           <Route
             path='/profile/orders/:number'
             element={
-            <ProtectedRoute>
-              <Modal title='' children={<OrderInfo />} onClose={goBack} />
-            </ProtectedRoute>
+              <ProtectedRoute>
+                <Modal title='' children={<OrderInfo />} onClose={goBack} />
+              </ProtectedRoute>
             }
           />
         </Routes>

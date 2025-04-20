@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import AuthReducer from './slices/authSlice';
 import IngredientsReducer from './slices/ingredientsSlice';
 import ConstructorReducer from './slices/constructorSlice';
+import FeedReducer from './slices/feedSlice';
 import {
   TypedUseSelectorHook,
   useDispatch as dispatchHook,
@@ -14,7 +15,8 @@ const store = configureStore({
   reducer: {
     auth: AuthReducer,
     ingredients: IngredientsReducer,
-    constructorIngredients: ConstructorReducer
+    constructorIngredients: ConstructorReducer,
+    feed: FeedReducer
   },
   devTools: process.env.NODE_ENV !== 'production'
 });
