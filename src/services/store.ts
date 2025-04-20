@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import AuthReducer from './slices/authSlice';
 import IngredientsReducer from './slices/ingredientsSlice';
+import ConstructorReducer from './slices/constructorSlice';
 import {
   TypedUseSelectorHook,
   useDispatch as dispatchHook,
@@ -12,7 +13,8 @@ import {
 const store = configureStore({
   reducer: {
     auth: AuthReducer,
-    ingredients: IngredientsReducer
+    ingredients: IngredientsReducer,
+    constructorIngredients: ConstructorReducer
   },
   devTools: process.env.NODE_ENV !== 'production'
 });
