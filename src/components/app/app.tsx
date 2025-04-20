@@ -13,18 +13,19 @@ import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { Route, Routes, useNavigate } from 'react-router';
+import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import { ProtectedRoute } from '../Protected-Route';
 
 const App = () => {
   const navigation = useNavigate();
   const goBack = () => navigation(-1);
+  const location = useLocation();
+  const backgroundLocation = location.state?.background;
 
   return (
     <div className={styles.app}>
       <AppHeader />
-
-      <Routes>
+      <Routes location={backgroundLocation || location}>
         <Route path='*' element={<NotFound404 />} />
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
@@ -78,38 +79,35 @@ const App = () => {
           }
         />
       </Routes>
-      <Routes>
-        <Route
-          path='/feed/:number'
-          element={
-            <Modal
-              title='Детали ингредиента'
-              children={<OrderInfo />}
-              onClose={goBack}
-            />
-          }
-        />
-        <Route
-          path='/ingredients/:id'
-          element={
-            <Modal
-              title='id'
-              children={<IngredientDetails />}
-              onClose={goBack}
-            />
-          }
-        />
-        <Route
-          path='/profile/orders/:number'
-          element={
-            <Modal
-              title='number Order'
-              children={<OrderInfo />}
-              onClose={goBack}
-            />
-          }
-        />
-      </Routes>
+
+      {backgroundLocation && (
+        <Routes location={backgroundLocation || location}>
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal title='' children={<OrderInfo />} onClose={goBack} />
+            }
+          />
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal
+                title='Детали ингредиента'
+                children={<IngredientDetails />}
+                onClose={goBack}
+              />
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+            <ProtectedRoute>
+              <Modal title='' children={<OrderInfo />} onClose={goBack} />
+            </ProtectedRoute>
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 };
