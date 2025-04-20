@@ -37,7 +37,14 @@ const constructorSlice = createSlice({
   initialState,
   reducers: {
     addIngredient(state, action) {
-      state.constructorItems.ingredients.push(action.payload);
+      const ingredient = action.payload;
+      if (ingredient.type === 'bun') {
+        state.constructorItems.bun = ingredient;
+      } else {
+        state.constructorItems.ingredients.push({
+          ...ingredient
+        });
+      }
     },
     removeIngredient(state, action) {
       state.constructorItems.ingredients =
@@ -53,6 +60,13 @@ const constructorSlice = createSlice({
     },
     setOrderModalData(state, action) {
       state.orderModalData = action.payload;
+    },
+    moveIngredient(state, action) {
+      const { start, end } = action.payload;
+
+      const ingredient = state.constructorItems.ingredients;
+      const [moveItem] = ingredient.splice(start, 1);
+      ingredient.splice(end, 0, moveItem);
     }
   },
   extraReducers: (builder) => {
@@ -75,6 +89,7 @@ export const {
   addIngredient,
   removeIngredient,
   resetConstructor,
-  setOrderModalData
+  setOrderModalData,
+  moveIngredient
 } = constructorSlice.actions;
 export default constructorSlice.reducer;

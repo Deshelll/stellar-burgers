@@ -17,9 +17,9 @@ export const ConstructorPage: FC = () => {
   );
   //const isIngredientsLoading = false;
 
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchIngredients());
+  // }, [dispatch]);
 
   return (
     <>
