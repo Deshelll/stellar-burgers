@@ -20,11 +20,12 @@ export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
     };
 
     const handleClose = () => {
-      dispatch(removeIngredient(ingredient));
+      dispatch(removeIngredient(ingredient.uuid));
     };
 
     return (
       <BurgerConstructorElementUI
+        key={ingredient.uuid}
         ingredient={ingredient}
         index={index}
         totalItems={totalItems}
