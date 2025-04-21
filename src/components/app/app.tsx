@@ -39,6 +39,7 @@ const App = () => {
         <Route path='*' element={<NotFound404 />} />
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
 
         <Route
           path='/login'
@@ -91,7 +92,7 @@ const App = () => {
       </Routes>
 
       {backgroundLocation && (
-        <Routes location={backgroundLocation || location}>
+        <Routes>
           <Route
             path='/feed/:number'
             element={
