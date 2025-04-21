@@ -1,5 +1,7 @@
 import {
+  getUserApi,
   loginUserApi,
+  refreshToken,
   registerUserApi,
   TLoginData,
   TRegisterData,
@@ -53,6 +55,28 @@ export const logoutUser = createAsyncThunk('profile/logout', async (_, api) => {
 
   api.dispatch(logout());
 });
+
+export const getUserData = createAsyncThunk(
+  'auth/getUserData',
+  async (_, { dispatch }) => {
+    try {
+      const response = await getUserApi();
+      dispatch(setUser(response.user));
+    } catch (err: any) {
+      if (err.message === 'jwt expired') {
+        try {
+          await refreshToken();
+          const response = await getUserApi();
+          dispatch(setUser(response.user));
+        } catch (err) {
+          dispatch(logout());
+        }
+      }
+
+      return err;
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: 'auth',

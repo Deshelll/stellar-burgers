@@ -18,6 +18,7 @@ import { ProtectedRoute } from '../Protected-Route';
 import { useEffect } from 'react';
 import { useDispatch } from '../../services/store';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
+import { getUserData } from '../../services/slices/authSlice';
 
 const App = () => {
   const navigation = useNavigate();
@@ -28,6 +29,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchIngredients());
+    dispatch(getUserData());
   }, [dispatch]);
 
   return (
