@@ -1,29 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
-import AuthReducer from './slices/authSlice';
-import IngredientsReducer from './slices/ingredientsSlice';
-import ConstructorReducer from './slices/constructorSlice';
-import ProfileOrdersReducer from './slices/profileOrderSlice';
-import FeedReducer from './slices/feedSlice';
+
 import {
   TypedUseSelectorHook,
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
 
-//const rootReducer = () => {}; // Заменить на импорт настоящего редьюсера
+const rootReducer = () => {}; // Заменить на импорт настоящего редьюсера
 
 const store = configureStore({
-  reducer: {
-    auth: AuthReducer,
-    ingredients: IngredientsReducer,
-    constructorIngredients: ConstructorReducer,
-    feed: FeedReducer,
-    profileOrders: ProfileOrdersReducer
-  },
+  reducer: rootReducer,
   devTools: process.env.NODE_ENV !== 'production'
 });
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof rootReducer>;
 
 export type AppDispatch = typeof store.dispatch;
 
