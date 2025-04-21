@@ -6,9 +6,12 @@ import {
   resetConstructor,
   sendOrder
 } from '../../services/slices/constructorSlice';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const constructorItems = useSelector(
     (state) => state.constructorIngredients.constructorItems
   );
@@ -21,16 +24,22 @@ export const BurgerConstructor: FC = () => {
     (state) => state.constructorIngredients.orderModalData
   );
 
+  const user = useSelector((state) => state.auth.user);
+
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
 
-    const ingredientsId = [
-      constructorItems.bun._id,
-      ...constructorItems.ingredients.map((item) => item._id),
-      constructorItems.bun._id
-    ];
+    if (user) {
+      const ingredientsId = [
+        constructorItems.bun._id,
+        ...constructorItems.ingredients.map((item) => item._id),
+        constructorItems.bun._id
+      ];
 
-    dispatch(sendOrder(ingredientsId));
+      dispatch(sendOrder(ingredientsId));
+    } else {
+      navigate('/login');
+    }
   };
 
   const closeOrderModal = () => {
