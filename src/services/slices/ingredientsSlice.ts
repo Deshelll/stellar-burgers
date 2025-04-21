@@ -1,4 +1,4 @@
-import { getIngredientsApi } from '@api';
+import { getIngredientsApi, getOrderByNumberApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TIngredient, TOrder } from '@utils-types';
 
@@ -28,6 +28,14 @@ export const fetchIngredients = createAsyncThunk(
   }
 );
 
+export const fetchOrderById = createAsyncThunk(
+  'feed/fetchOrderbyId',
+  async (number: string | number) => {
+    const response = await getOrderByNumberApi(Number(number));
+    return response.orders[0];
+  }
+);
+
 const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
@@ -45,6 +53,18 @@ const ingredientsSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+
+      .addCase(fetchOrderById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchOrderById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.orderData = action.payload;
+      })
+      .addCase(fetchOrderById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });
