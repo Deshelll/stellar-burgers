@@ -17,7 +17,6 @@ export const OrderInfo: FC = () => {
 
   useEffect(() => {
     if (number) {
-      console.log('id', number);
       dispatch(fetchOrderById(number));
     }
   }, [dispatch, number]);
@@ -63,7 +62,7 @@ export const OrderInfo: FC = () => {
       total
     };
   }, [orderData, ingredients]);
-  console.log(orderInfo);
+  
   if (!orderInfo) {
     return <Preloader />;
   }

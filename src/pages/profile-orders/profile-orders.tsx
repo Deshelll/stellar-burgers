@@ -13,7 +13,6 @@ export const ProfileOrders: FC = () => {
   }, [dispatch]);
   /** TODO: взять переменную из стора */
   //const orders: TOrder[] = [];
-  console.log(orders);
 
   return <ProfileOrdersUI orders={orders} />;
 };
