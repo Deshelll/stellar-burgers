@@ -10,7 +10,7 @@ type feedSlice = {
   totalToday: number;
 };
 
-const initialState: feedSlice = {
+export const initialState: feedSlice = {
   orders: [],
   isLoading: false,
   error: null,

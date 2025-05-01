@@ -1,0 +1,98 @@
+/// <reference types="cypress" />
+import  ingredients from '../fixtures/ingredients.json';
+describe('[api/ingredients]', () => {
+    it('Перехват запроса', () => {
+        cy.intercept('GET', '**/api/ingredients', {
+           fixture: 'ingredients.json' 
+        }).as('getIngredients');
+
+        cy.visit('/');
+        cy.wait('@getIngredients');
+        
+        ingredients.data.forEach((product) => {
+            cy.contains(product.name).should('exist');
+        });
+    });
+});
+
+describe('[constructor]', () => {
+    it('Добавление ингредиента из списка в конструктор', () => {
+        cy.intercept('GET', '**/api/ingredients', {
+            fixture: 'ingredients.json'
+        }).as('getIngredients');
+
+        cy.visit('/');
+        cy.wait('@getIngredients');
+
+        const ingredientName = ingredients.data[0].name;
+
+        cy.get(`[data-testid="ingredients-card"]`).first().within(() => {
+            cy.contains('Добавить').click();
+        });
+
+        cy.contains(ingredientName).should('exist');
+    });
+});
+
+describe('[modal]', () => {
+    it('Откытие и закрытие модального окна ингредиента', () => {
+        cy.intercept('GET', '**/api/ingredients', {
+            fixture: 'ingredients.json'
+        }).as('getIngredients');
+
+        cy.visit('/');
+        cy.wait('@getIngredients');
+
+        cy.get('[data-testid="ingredients-card"]').first().click();
+        //Закрытие на крестик
+        cy.get('[data-testid="modal"]').should('exist');
+        cy.get('[data-testid="modal-button-close"]').click();
+        cy.get('[data-testid="modal"]').should('not.exist');
+
+        cy.get('[data-testid="ingredients-card"]').first().click();
+        //Закрытие на оверлей
+        cy.get('[data-testid="modal"]').should('exist');
+        cy.get('[data-testid="modal-overlay-close"]').click({force: true});
+        cy.get('[data-testid="modal"]').should('not.exist');
+    });
+});
+
+describe('[order]', () => {
+    it('Создание заказа', () => {
+        cy.intercept('GET', '**/api/ingredients', {
+            fixture: 'ingredients.json'
+        }).as('getIngredients');
+
+        cy.intercept('GET', '**/api/auth/user', {
+            fixture: 'user.json'
+        }).as('getUser');
+
+        cy.intercept('POST', '**/api/orders', {
+            fixture: 'postOrder.json'
+        }).as('postOrder');
+
+        cy.setCookie('accessToken', 'mockToken');
+
+        cy.visit('/');
+        cy.wait('@getIngredients');
+        cy.wait('@getUser');
+
+        cy.get(`[data-testid="ingredients-card"]`).first().within(() => {
+            cy.contains('Добавить').click();
+        });
+        cy.get(`[data-testid="ingredients-card"]`).eq(1).within(() => {
+            cy.contains('Добавить').click();
+        });
+
+        cy.contains('Оформить заказ').click();
+        cy.wait('@postOrder');
+
+        cy.get('[data-testid="modal"]').should('exist');
+        cy.contains('75999').should('exist');
+
+        cy.get('[data-testid="modal-button-close"]').click();
+        cy.get('[data-testid="modal"]').should('not.exist');
+
+        cy.contains('Выберите булки').should('exist');
+    });
+});
