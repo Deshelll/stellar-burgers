@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+import { should } from 'chai';
 import  ingredients from '../fixtures/ingredients.json';
 describe('[api/ingredients]', () => {
     it('Перехват запроса', () => {
@@ -26,11 +27,13 @@ describe('[constructor]', () => {
 
         const ingredientName = ingredients.data[0].name;
 
+        cy.get('[data-testid="burger-constructor"]').should('not.contain', ingredientName);
+
         cy.get(`[data-testid="ingredients-card"]`).first().within(() => {
             cy.contains('Добавить').click();
         });
 
-        cy.contains(ingredientName).should('exist');
+        cy.get('[data-testid="burger-constructor"]').should('contain', ingredientName);
     });
 });
 
