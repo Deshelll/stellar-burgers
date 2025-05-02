@@ -46,15 +46,24 @@ describe('[modal]', () => {
         cy.visit('/');
         cy.wait('@getIngredients');
 
-        cy.get('[data-testid="ingredients-card"]').first().click();
-        //Закрытие на крестик
+        const ingredientName = 'Филе Люминесцентного тетраодонтимформа';
+
+        cy.get('[data-testid="modal"]').should('not.exist');
+
+        cy.contains('[data-testid="ingredients-card"]', ingredientName).click();
         cy.get('[data-testid="modal"]').should('exist');
+        cy.get('[data-testid="modal"]').should('contain', ingredientName);
+        //cy.get('[data-testid="ingredients-card"]').first().click();
+        //Закрытие на крестик
+        //cy.get('[data-testid="modal"]').should('exist');
         cy.get('[data-testid="modal-button-close"]').click();
         cy.get('[data-testid="modal"]').should('not.exist');
 
-        cy.get('[data-testid="ingredients-card"]').first().click();
-        //Закрытие на оверлей
+        cy.contains('[data-testid="ingredients-card"]', ingredientName).click();
         cy.get('[data-testid="modal"]').should('exist');
+        //cy.get('[data-testid="ingredients-card"]').first().click();
+        //Закрытие на оверлей
+        //cy.get('[data-testid="modal"]').should('exist');
         cy.get('[data-testid="modal-overlay-close"]').click({force: true});
         cy.get('[data-testid="modal"]').should('not.exist');
     });
