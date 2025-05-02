@@ -70,6 +70,11 @@ describe('[modal]', () => {
 });
 
 describe('[order]', () => {
+    afterEach(() => {
+        cy.clearCookies();
+        cy.clearLocalStorage();
+    });
+
     it('Создание заказа', () => {
         cy.intercept('GET', '**/api/ingredients', {
             fixture: 'ingredients.json'
