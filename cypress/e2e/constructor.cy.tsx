@@ -89,12 +89,16 @@ describe('[order]', () => {
         cy.wait('@getIngredients');
         cy.wait('@getUser');
 
-        cy.get(`[data-testid="ingredients-card"]`).first().within(() => {
-            cy.contains('Добавить').click();
-        });
-        cy.get(`[data-testid="ingredients-card"]`).eq(1).within(() => {
-            cy.contains('Добавить').click();
-        });
+        const bun = 'Краторная булка N-200i';
+        const ingredient = 'Биокотлета из марсианской Магнолии';
+
+        cy.contains(`[data-testid="ingredients-card"]`, bun).contains('Добавить').click();
+        cy.contains(`[data-testid="ingredients-card"]`, ingredient).contains('Добавить').click();
+
+        cy.get('[data-testid="burger-constructor"]').should('not.contain.text', 'Выберите булки');
+        cy.get('[data-testid="burger-constructor"]').should('contain.text', 'Краторная булка N-200i');
+        cy.get('[data-testid="burger-constructor"]').should('not.contain.text', 'Выберите начинку');
+        cy.get('[data-testid="burger-constructor"]').should('contain.text', 'Биокотлета из марсианской Магнолии');
 
         cy.contains('Оформить заказ').click();
         cy.wait('@postOrder');
@@ -105,6 +109,7 @@ describe('[order]', () => {
         cy.get('[data-testid="modal-button-close"]').click();
         cy.get('[data-testid="modal"]').should('not.exist');
 
-        cy.contains('Выберите булки').should('exist');
+        cy.get('[data-testid="burger-constructor"]').should('contain.text', 'Выберите булки');
+        cy.get('[data-testid="burger-constructor"]').should('contain.text', 'Выберите начинку');
     });
 });
