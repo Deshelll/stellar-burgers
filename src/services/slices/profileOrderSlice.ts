@@ -7,7 +7,7 @@ type ProfileOrdersState = {
   isLoading: boolean;
 };
 
-const initialState: ProfileOrdersState = {
+export const initialState: ProfileOrdersState = {
   orders: [],
   isLoading: false
 };
